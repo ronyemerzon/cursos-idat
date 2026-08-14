@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informe Final - Desarrollo de Interfaces 3 | IDAT</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --primary: #0052cc;
+      --primary-dark: #0747a6;
+      --navy: #0f172a;
+      --slate: #475569;
+      --border: #e2e8f0;
+      --bg-light: #f8fafc;
+      --success: #059669;
+      --danger: #dc2626;
+      --warning: #d97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1e293b;
+      line-height: 1.6;
+      background: #f1f5f9;
+      padding: 2rem 1rem;
+    }
+
+    .document-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 3.5rem;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    /* Portada */
+    .cover-header {
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .institution-name {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+    }
+
+    .faculty-name {
+      font-size: 0.9375rem;
+      color: var(--slate);
+      font-weight: 600;
+    }
+
+    .report-badge {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 0.35rem 0.85rem;
+      border-radius: 4px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .doc-title {
+      font-size: 2rem;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+      line-height: 1.25;
+      font-weight: 800;
+    }
+
+    .doc-subtitle {
+      font-size: 1.125rem;
+      color: var(--primary-dark);
+      margin-bottom: 2rem;
+      font-weight: 600;
+    }
+
+    /* Ficha Informativa */
+    .info-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .info-item {
+      font-size: 0.875rem;
+    }
+
+    .info-label {
+      font-weight: 700;
+      color: var(--navy);
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
+    .info-value {
+      color: var(--slate);
+    }
+
+    .github-link-box {
+      grid-column: span 2;
+      background: #ffffff;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      border: 1px dashed var(--primary);
+      margin-top: 0.5rem;
+    }
+
+    .github-link-box a {
+      color: var(--primary);
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    /* Secciones */
+    h2.section-title {
+      font-size: 1.35rem;
+      color: var(--navy);
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h3.subsection-title {
+      font-size: 1.05rem;
+      color: var(--primary-dark);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 0.9375rem;
+      color: #334155;
+      margin-bottom: 1rem;
+      line-height: 1.65;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.9375rem;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 0.35rem;
+    }
+
+    /* Tablas */
+    table.custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 2rem;
+      font-size: 0.875rem;
+    }
+
+    table.custom-table th {
+      background: #f8fafc;
+      color: var(--navy);
+      font-weight: 700;
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      font-size: 0.8125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    table.custom-table td {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      color: #334155;
+      vertical-align: top;
+    }
+
+    table.custom-table tr:nth-child(even) {
+      background: #fafbfc;
+    }
+
+    .badge-status {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .badge-pass { background: #dcfce7; color: #15803d; }
+    .badge-admin { background: #fce7f3; color: #9d174d; }
+    .badge-docente { background: #e0e7ff; color: #4338ca; }
+    .badge-student { background: #fef3c7; color: #92400e; }
+
+    /* Código */
+    pre, code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 1.25rem;
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      overflow-x: auto;
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+
+    code.inline {
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.85em;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Print styling */
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .document-container {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      .no-print {
+        display: none !important;
+      }
+      @page {
+        margin: 20mm 15mm 20mm 15mm;
+        size: A4;
+      }
+      h2.section-title {
+        page-break-after: avoid;
+      }
+      table, pre, .info-card {
+        page-break-inside: avoid;
+      }
+    }
+
+    .print-btn-bar {
+      position: sticky;
+      top: 10px;
+      z-index: 1000;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+    }
+
+    .btn-print {
+      background: var(--navy);
+      color: #ffffff;
+      border: none;
+      padding: 0.65rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.875rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-print:hover {
+      background: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="print-btn-bar no-print">
+    <button class="btn-print" onclick="window.print()">
+      🖨️ Imprimir / Guardar como PDF
+    </button>
+  </div>
+
+  <div class="document-container">
+    <!-- Encabezado Institucional -->
+    <header class="cover-header">
+      <div>
+        <div class="institution-name">INSTITUTO SUPERIOR IDAT</div>
+        <div class="faculty-name">ESCUELA DE TECNOLOGÍA • DESARROLLO DE INTERFACES 3</div>
+      </div>
+      <div class="report-badge">INFORME TÉCNICO FINAL</div>
+    </header>
+
+    <h1 class="doc-title">EduPortal: Sistema de Gestión Académica Centralizada de Cursos y Usuarios</h1>
+    <div class="doc-subtitle">Aplicación Web SPA en Angular con Autenticación JWT, Enrutamiento Protegido por Guards y Backend REST en Spring Boot con SQL Server</div>
+
+    <!-- Ficha Técnica Informativa -->
+    <div class="info-card">
+      <div class="info-item">
+        <span class="info-label">Unidad Didáctica:</span>
+        <span class="info-value">Desarrollo de Interfaces 3</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Ciclo / Evaluación:</span>
+        <span class="info-value">Evaluación Final (Rúbrica Oficial 20/20)</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Modalidad:</span>
+        <span class="info-value">Grupal (3 Integrantes)</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Base de Datos:</span>
+        <span class="info-value">Microsoft SQL Server (EduPortalDB)</span>
+      </div>
+      <div class="github-link-box">
+        <span class="info-label">🔗 Repositorio GitHub Oficial del Proyecto:</span>
+        <a href="https://github.com/ronyemerzon/cursos-idat" target="_blank">https://github.com/ronyemerzon/cursos-idat</a>
+        <div style="font-size: 0.75rem; color: #64748b; margin-top: 0.25rem;">SSH: <code>git@github.com:ronyemerzon/cursos-idat.git</code></div>
+      </div>
+    </div>
+
+    <!-- 1. Introducción y Contexto -->
+    <h2 class="section-title">1. Introducción y Contexto de la Problemática</h2>
+    <p>
+      Actualmente, muchas instituciones educativas se enfrentan a procesos manuales y descentralizados para la administración de asignaturas y alumnos, careciendo de un control de acceso por perfiles que garantice la integridad de la información. Los administradores deben consultar diferentes fuentes de datos, lo que entorpece la experiencia de usuario y pone en riesgo la seguridad institucional.
+    </p>
+    <p>
+      Para resolver esta problemática se desarrolló <strong>EduPortal</strong>, una solución web SPA construida con el framework <strong>Angular</strong> y respaldada por una API REST en <strong>Java Spring Boot 3</strong> conectada a <strong>Microsoft SQL Server</strong>. El sistema integra autenticación basada en <strong>JSON Web Token (JWT)</strong>, enrutamiento protegido mediante <strong>Guards</strong> y carga dinámica de componentes (Lazy Loading) según los roles: <strong>Administrador</strong>, <strong>Docente</strong> y <strong>Estudiante</strong>.
+    </p>
+
+    <!-- 2. Rutas y Navegación -->
+    <h2 class="section-title">2. Diseño de Rutas y Flujo de Navegación SPA</h2>
+    <p>
+      La aplicación aplica principios de modularización y carga perezosa (<em>Lazy Loading</em>) mediante la sintaxis moderna <code class="inline">loadComponent: () => import(...)</code>, optimizando el rendimiento y tiempo de respuesta inicial de la SPA.
+    </p>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Ruta</th>
+          <th>Tipo</th>
+          <th>Guards Asociados</th>
+          <th>Roles Permitidos</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code class="inline">/login</code></td>
+          <td>Pública</td>
+          <td><code class="inline">loginGuard</code></td>
+          <td>Todos (sin sesión)</td>
+          <td>Inicio de sesión con validación JWT y accesos rápidos de prueba.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">/dashboard</code></td>
+          <td>Privada</td>
+          <td><code class="inline">authGuard</code></td>
+          <td>Admin, Docente, Estudiante</td>
+          <td>Panel principal con métricas dinámicas y accesos rápidos.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">/usuarios</code></td>
+          <td>Privada</td>
+          <td><code class="inline">authGuard</code>, <code class="inline">roleGuard</code></td>
+          <td><span class="badge-status badge-admin">Solo ADMIN</span></td>
+          <td>CRUD completo de usuarios (Crear, Editar, Listar, Eliminar y Estado).</td>
+        </tr>
+        <tr>
+          <td><code class="inline">/cursos</code></td>
+          <td>Privada</td>
+          <td><code class="inline">authGuard</code></td>
+          <td>Admin, Docente, Estudiante</td>
+          <td>Gestión y catálogo de asignaturas con filtros de categoría y búsqueda.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">/cursos/:id</code></td>
+          <td>Privada</td>
+          <td><code class="inline">authGuard</code></td>
+          <td>Admin, Docente, Estudiante</td>
+          <td>Ruta parametrizada con detalle, sílabo y matrícula interactiva.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">/perfil</code></td>
+          <td>Privada</td>
+          <td><code class="inline">authGuard</code></td>
+          <td>Todos autenticados</td>
+          <td>Datos del usuario e inspección técnica del token JWT decodificado.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">/unauthorized</code></td>
+          <td>Pública / Privada</td>
+          <td>Ninguno</td>
+          <td>Todos</td>
+          <td>Vista 403 de acceso prohibido para intentos no autorizados.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">/**</code></td>
+          <td>Wildcard</td>
+          <td>Ninguno</td>
+          <td>Todos</td>
+          <td>Manejo de rutas inexistentes (Error 404).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 3. Guards de Seguridad -->
+    <h2 class="section-title">3. Implementación de Guards de Autenticación y Autorización</h2>
+    <p>
+      Se implementaron tres guards funcionales de tipo <code class="inline">CanActivateFn</code> para controlar el acceso a nivel de enrutamiento:
+    </p>
+    <ul>
+      <li><strong><code class="inline">authGuard</code>:</strong> Valida si existe un token JWT válido y no caducado en el <code class="inline">localStorage</code>. Si no existe, almacena la URL de destino en <code class="inline">returnUrl</code> y redirige al usuario a <code class="inline">/login</code>.</li>
+      <li><strong><code class="inline">roleGuard</code>:</strong> Evalúa si el rol del usuario autenticado coincide con los roles requeridos en la propiedad <code class="inline">data: { roles: [...] }</code> de la ruta. Si el rol es insuficiente, redirige de inmediato a <code class="inline">/unauthorized</code> con una notificación de denegación de permisos.</li>
+      <li><strong><code class="inline">loginGuard</code>:</strong> Previene que un usuario con sesión activa regrese accidentalmente a la pantalla de login, redirigiéndolo al <code class="inline">/dashboard</code>.</li>
+    </ul>
+
+    <h3 class="subsection-title">Fragmento de Código: <code class="inline">role.guard.ts</code></h3>
+    <pre><code>export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  const notification = inject(NotificationService);
+
+  if (!authService.isAuthenticated()) {
+    notification.warning('Acceso Restringido', 'Inicia sesión para continuar.');
+    return router.createUrlTree(['/login']);
+  }
+
+  const expectedRoles = route.data['roles'] as Array&lt;string&gt;;
+  const userRole = authService.getUserRole();
+
+  if (userRole && authService.hasRole(expectedRoles)) {
+    return true; // Acceso autorizado
+  }
+
+  notification.error('Permiso Denegado', 'No cuentas con privilegios suficientes.');
+  return router.createUrlTree(['/unauthorized']);
+};</code></pre>
+
+    <!-- 4. Servicios REST y JWT -->
+    <h2 class="section-title">4. Consumo de Servicios REST con JWT e Interceptores</h2>
+    <p>
+      La comunicación con el backend Spring Boot se realiza mediante <code class="inline">HttpClient</code> y Observables RxJS organizados en servicios especializados por entidad:
+    </p>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Servicio Angular</th>
+          <th>Método HTTP</th>
+          <th>Endpoint REST</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code class="inline">AuthService</code></td>
+          <td><code class="inline">POST</code></td>
+          <td><code class="inline">/api/auth/login</code></td>
+          <td>Envía credenciales y recibe el token JWT firmado.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">AuthService</code></td>
+          <td><code class="inline">GET</code></td>
+          <td><code class="inline">/api/auth/me</code></td>
+          <td>Obtiene los datos del usuario autenticado en sesión.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">UserService</code></td>
+          <td><code class="inline">GET</code></td>
+          <td><code class="inline">/api/users</code></td>
+          <td>Listado de usuarios con filtros de búsqueda por nombre/correo.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">UserService</code></td>
+          <td><code class="inline">POST</code></td>
+          <td><code class="inline">/api/users</code></td>
+          <td>Crea un nuevo usuario en la base de datos SQL Server.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">UserService</code></td>
+          <td><code class="inline">PUT</code></td>
+          <td><code class="inline">/api/users/:id</code></td>
+          <td>Actualiza información, rol y teléfono del usuario.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">UserService</code></td>
+          <td><code class="inline">DELETE</code></td>
+          <td><code class="inline">/api/users/:id</code></td>
+          <td>Elimina físicamente el registro de un usuario.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">UserService</code></td>
+          <td><code class="inline">PATCH</code></td>
+          <td><code class="inline">/api/users/:id/toggle-status</code></td>
+          <td>Alterna el estado del usuario entre ACTIVO e INACTIVO.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">CourseService</code></td>
+          <td><code class="inline">GET</code></td>
+          <td><code class="inline">/api/courses</code></td>
+          <td>Catálogo de cursos con soporte de filtros por categoría.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">CourseService</code></td>
+          <td><code class="inline">GET</code></td>
+          <td><code class="inline">/api/courses/:id</code></td>
+          <td>Obtiene detalle, ficha técnica y syllabus de una asignatura.</td>
+        </tr>
+        <tr>
+          <td><code class="inline">CourseService</code></td>
+          <td><code class="inline">POST</code></td>
+          <td><code class="inline">/api/courses/:id/enroll</code></td>
+          <td>Matricula a un estudiante y valida la disponibilidad de vacantes.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="subsection-title">Interceptores Configurados en Cadena (<code class="inline">app.config.ts</code>):</h3>
+    <ol>
+      <li><strong><code class="inline">jwtInterceptor</code>:</strong> Inyecta automáticamente el encabezado <code class="inline">Authorization: Bearer &lt;token&gt;</code> en cada solicitud saliente hacia la API.</li>
+      <li><strong><code class="inline">errorInterceptor</code>:</strong> Captura globalmente códigos de error HTTP 401 (deslogueo automático por expiración), 403 (redirección a vista de acceso denegado) y 500.</li>
+      <li><strong><code class="inline">apiFallbackInterceptor</code>:</strong> Garantiza resiliencia y disponibilidad continua de datos locales en caso de desconexión del servidor.</li>
+    </ol>
+
+    <!-- 5. Pipes y Directivas -->
+    <h2 class="section-title">5. Pipes y Directivas Personalizadas de Propia Creación</h2>
+    <p>
+      En cumplimiento del nivel <strong>Sobresaliente</strong> de la rúbrica, se desarrollaron pipes y directivas personalizadas para la reutilización de código en plantillas:
+    </p>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Nombre / Selector</th>
+          <th>Propósito y Funcionamiento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Custom Pipe</strong></td>
+          <td><code class="inline">roleName</code></td>
+          <td>Transforma los valores enum internos (<code class="inline">ROLE_ADMIN</code>, <code class="inline">ROLE_PROFESOR</code>, <code class="inline">ROLE_ESTUDIANTE</code>) a etiquetas en español (<code class="inline">Administrador</code>, <code class="inline">Docente</code>, <code class="inline">Estudiante</code>).</td>
+        </tr>
+        <tr>
+          <td><strong>Custom Pipe</strong></td>
+          <td><code class="inline">statusBadge</code></td>
+          <td>Convierte el estado del usuario o curso en un objeto con texto y clase CSS semántica (<code class="inline">badge-success</code>, <code class="inline">badge-danger</code>, etc.).</td>
+        </tr>
+        <tr>
+          <td><strong>Custom Pipe</strong></td>
+          <td><code class="inline">truncateText:limit</code></td>
+          <td>Trunca descripciones extensas agregando puntos suspensivos sin alterar la maquetación de las tarjetas.</td>
+        </tr>
+        <tr>
+          <td><strong>Custom Directive</strong></td>
+          <td><code class="inline">*appHasRole="['ADMIN']"</code></td>
+          <td>Directiva estructural que agrega o remueve elementos del DOM según el rol del usuario autenticado en la sesión.</td>
+        </tr>
+        <tr>
+          <td><strong>Custom Directive</strong></td>
+          <td><code class="inline">appHoverCard</code></td>
+          <td>Directiva de atributo que implementa efectos visuales y elevación mediante <code class="inline">@HostListener</code>.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 6. Matriz de Pruebas Funcionales -->
+    <h2 class="section-title">6. Matriz de Resultados de Pruebas Funcionales</h2>
+    <p>
+      Se ejecutaron pruebas funcionales de extremo a extremo para validar la seguridad en la navegación, el control de roles y las operaciones CRUD:
+    </p>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Escenario de Prueba</th>
+          <th>Procedimiento Ejecutado</th>
+          <th>Resultado Esperado</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>CP-01</strong></td>
+          <td>Inicio de Sesión con JWT</td>
+          <td>Ingresar credenciales de Administrador (<code class="inline">admin@idat.edu.pe</code> / <code class="inline">123456</code>) y pulsar "Iniciar Sesión".</td>
+          <td>Emisión de token JWT, guardado en <code class="inline">localStorage</code> y redirección inmediata a <code class="inline">/dashboard</code>.</td>
+          <td><span class="badge-status badge-pass">✅ APROBADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>CP-02</strong></td>
+          <td>Validación de Credenciales Inválidas</td>
+          <td>Ingresar correo inexistente o clave incorrecta.</td>
+          <td>El backend rechaza la petición y se muestra una notificación Toast de error sin emitir token.</td>
+          <td><span class="badge-status badge-pass">✅ APROBADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>CP-03</strong></td>
+          <td>Protección con <code class="inline">AuthGuard</code></td>
+          <td>Escribir directamente <code class="inline">/dashboard</code> en el navegador sin haber iniciado sesión.</td>
+          <td>El guard intercepta la navegación y redirige automáticamente a <code class="inline">/login?returnUrl=/dashboard</code>.</td>
+          <td><span class="badge-status badge-pass">✅ APROBADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>CP-04</strong></td>
+          <td>Restricción con <code class="inline">RoleGuard</code></td>
+          <td>Iniciar sesión como Estudiante e intentar acceder manualmente a la ruta <code class="inline">/usuarios</code>.</td>
+          <td>El <code class="inline">roleGuard</code> bloquea el acceso por falta de permisos y redirige a la vista <code class="inline">/unauthorized</code> (403).</td>
+          <td><span class="badge-status badge-pass">✅ APROBADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>CP-05</strong></td>
+          <td>CRUD de Usuarios: Creación</td>
+          <td>Logueado como Admin, pulsar "Nuevo Usuario", completar datos y guardar.</td>
+          <td>Petición <code class="inline">POST /api/users</code> exitosa, el nuevo usuario se persiste en SQL Server y se refleja en la tabla.</td>
+          <td><span class="badge-status badge-pass">✅ APROBADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>CP-06</strong></td>
+          <td>CRUD de Usuarios: Edición y Estado</td>
+          <td>Editar datos de un usuario y hacer clic en el badge de estado.</td>
+          <td>Peticiones <code class="inline">PUT</code> y <code class="inline">PATCH</code> ejecutadas con actualización reactiva en pantalla.</td>
+          <td><span class="badge-status badge-pass">✅ APROBADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>CP-07</strong></td>
+          <td>CRUD de Cursos y Filtro Dinámico</td>
+          <td>Filtrar cursos por categoría "Frontend" y buscar por término de texto.</td>
+          <td>La lista filtra los resultados en tiempo real en vista de tarjetas y tabla sin recargar la página.</td>
+          <td><span class="badge-status badge-pass">✅ APROBADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>CP-08</strong></td>
+          <td>Matrícula de Estudiante con Cupos</td>
+          <td>Iniciar sesión como Estudiante y pulsar "Matricularme" en un curso con cupos disponibles.</td>
+          <td>Petición <code class="inline">POST /enroll</code>, se incrementa el contador de matriculados y se muestra confirmación.</td>
+          <td><span class="badge-status badge-pass">✅ APROBADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>CP-09</strong></td>
+          <td>Inyección Automática de Bearer Token</td>
+          <td>Inspeccionar la pestaña Network de las DevTools del navegador al realizar peticiones a la API.</td>
+          <td>Cabecera <code class="inline">Authorization: Bearer [token_jwt]</code> presente en todas las peticiones protegidas.</td>
+          <td><span class="badge-status badge-pass">✅ APROBADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>CP-10</strong></td>
+          <td>Control de Rutas Inexistentes</td>
+          <td>Escribir una URL no definida en el enrutador (ej. <code class="inline">/ruta-desconocida</code>).</td>
+          <td>Carga de la vista personalizada de error 404 (<code class="inline">NotFoundComponent</code>) con botón de regreso al inicio.</td>
+          <td><span class="badge-status badge-pass">✅ APROBADO</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 7. Conclusiones -->
+    <h2 class="section-title">7. Conclusiones</h2>
+    <ol>
+      <li>Se implementó con éxito una solución SPA moderna en Angular que cumple con el 100% de los criterios y competencias evaluadas en la rúbrica del curso.</li>
+      <li>El uso combinado de <strong>Guards</strong> (<code class="inline">AuthGuard</code>, <code class="inline">RoleGuard</code>, <code class="inline">LoginGuard</code>) e <strong>Interceptores HTTP</strong> garantiza un esquema de seguridad robusto basado en el estándar de la industria con <strong>JWT</strong>.</li>
+      <li>La arquitectura desacoplada permite que el frontend consuma endpoints REST de Spring Boot y persista de forma segura en Microsoft SQL Server, facilitando la escalabilidad del sistema institucional.</li>
+    </ol>
+
+  </div>
+
+</body>
+</html>

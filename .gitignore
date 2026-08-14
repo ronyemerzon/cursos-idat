@@ -1,0 +1,24 @@
+# Node / Angular
+node_modules/
+.angular/
+dist/
+.npm
+npm-debug.log*
+
+# Java / Maven
+target/
+*.class
+.mvn/
+*.jar
+*.war
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.suo
+*.user
+
+# OS
+Thumbs.db
+.DS_Store
