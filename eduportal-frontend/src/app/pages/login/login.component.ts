@@ -99,7 +99,7 @@ import { ToastContainerComponent } from '../../shared/components/toast-container
         </form>
 
         <div class="login-footer">
-          <p>Autenticación basada en <strong>JSON Web Token (JWT)</strong> & Spring Security</p>
+          <p>© 2026 Instituto de Educación Superior IDAT • Todos los derechos reservados</p>
         </div>
       </div>
 

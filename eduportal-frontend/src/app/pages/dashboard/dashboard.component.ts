@@ -28,9 +28,9 @@ import { HoverCardDirective } from '../../shared/directives/hover-card.directive
       @if (authService.currentUser$ | async; as user) {
         <div class="welcome-banner card" appHoverCard>
           <div class="welcome-content">
-            <span class="badge badge-info mb-2">Panel Institucional</span>
+            <span class="badge badge-info mb-2">Portal Académico</span>
             <h1>¡Hola, {{ user.name }}! 👋</h1>
-            <p>Bienvenido al Sistema de Gestión Académica de IDAT. Estás autenticado con el rol de <strong>{{ user.role | roleName }}</strong> mediante JWT seguro.</p>
+            <p>Bienvenido al Sistema de Gestión Académica de IDAT. Consulta tus asignaturas, disponibilidad de cupos y gestiona los recursos del ciclo.</p>
           </div>
           <div class="welcome-actions">
             <a routerLink="/cursos" class="btn btn-primary">
@@ -38,7 +38,7 @@ import { HoverCardDirective } from '../../shared/directives/hover-card.directive
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
               </svg>
-              Explorar Cursos
+              Ver Cursos
             </a>
             <!-- Botón solo para ADMIN usando Directiva appHasRole -->
             <a *appHasRole="['ADMIN']" routerLink="/usuarios" class="btn btn-secondary">
@@ -46,7 +46,7 @@ import { HoverCardDirective } from '../../shared/directives/hover-card.directive
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                 <circle cx="9" cy="7" r="4"></circle>
               </svg>
-              Administrar Usuarios
+              Usuarios
             </a>
           </div>
         </div>
@@ -64,7 +64,7 @@ import { HoverCardDirective } from '../../shared/directives/hover-card.directive
           <div class="stat-details">
             <span class="stat-label">Cursos Activos</span>
             <span class="stat-value">{{ stats.activeCourses }}</span>
-            <span class="stat-sub">De {{ stats.totalCourses }} cursos totales</span>
+            <span class="stat-sub">Catálogo del ciclo actual</span>
           </div>
         </div>
 
@@ -78,7 +78,7 @@ import { HoverCardDirective } from '../../shared/directives/hover-card.directive
           <div class="stat-details">
             <span class="stat-label">Estudiantes</span>
             <span class="stat-value">{{ stats.totalStudents }}</span>
-            <span class="stat-sub">Matriculados en plataforma</span>
+            <span class="stat-sub">Alumnos registrados</span>
           </div>
         </div>
 
@@ -92,21 +92,21 @@ import { HoverCardDirective } from '../../shared/directives/hover-card.directive
           <div class="stat-details">
             <span class="stat-label">Docentes</span>
             <span class="stat-value">{{ stats.totalProfessors }}</span>
-            <span class="stat-sub">Profesores asignados</span>
+            <span class="stat-sub">Plana docente asignada</span>
           </div>
         </div>
 
         <div class="stat-card card" appHoverCard>
           <div class="stat-icon bg-pink">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
             </svg>
           </div>
           <div class="stat-details">
-            <span class="stat-label">Seguridad JWT</span>
-            <span class="stat-value">Activa</span>
-            <span class="stat-sub">Bearer Token en HttpClient</span>
+            <span class="stat-label">Sedes Activas</span>
+            <span class="stat-value">4 Sedes</span>
+            <span class="stat-sub">Lima, Arequipa, Chiclayo, Piura</span>
           </div>
         </div>
       </div>

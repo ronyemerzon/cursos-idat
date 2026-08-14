@@ -1,97 +1,104 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
+import { UserService } from '../../core/services/user.service';
+import { NotificationService } from '../../core/services/notification.service';
 import { RoleNamePipe } from '../../shared/pipes/role-name.pipe';
 import { StatusBadgePipe } from '../../shared/pipes/status-badge.pipe';
 import { HoverCardDirective } from '../../shared/directives/hover-card.directive';
-import { DecodedToken } from '../../core/models/auth.model';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, RoleNamePipe, StatusBadgePipe, HoverCardDirective],
+  imports: [CommonModule, ReactiveFormsModule, RoleNamePipe, StatusBadgePipe, HoverCardDirective],
   template: `
     <div class="profile-page">
       <div class="page-header">
-        <h2>Mi Perfil Institucional</h2>
-        <p class="text-muted">Información de la cuenta y detalles técnicos de la sesión JWT</p>
+        <h2>Mi Perfil</h2>
+        <p class="text-muted">Consulta y actualiza tu información personal y datos de contacto</p>
       </div>
 
       @if (authService.currentUser$ | async; as user) {
         <div class="profile-grid">
-          <!-- Tarjeta de Usuario -->
+          <!-- Tarjeta Lateral de Perfil -->
           <div class="card profile-card" appHoverCard>
             <div class="profile-avatar-box">
               <img [src]="user.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + user.name" alt="Avatar" class="avatar-lg" />
-              <span class="badge badge-online">Conectado</span>
+              <span class="badge badge-online">En línea</span>
             </div>
             
             <h3 class="profile-name">{{ user.name }}</h3>
-            <span class="badge badge-role-admin mb-2">{{ user.role | roleName }}</span>
+            <span class="badge badge-role mb-2">{{ user.role | roleName }}</span>
             <p class="profile-email">{{ user.email }}</p>
 
             <div class="profile-meta-list">
               <div class="meta-item">
-                <span class="meta-label">ID de Usuario:</span>
-                <strong>#{{ user.id }}</strong>
+                <span class="meta-label">ID de Registro:</span>
+                <strong>#00{{ user.id }}</strong>
               </div>
               <div class="meta-item">
-                <span class="meta-label">Estado de Cuenta:</span>
+                <span class="meta-label">Estado:</span>
                 @let badge = user.status | statusBadge;
                 <span class="badge" [ngClass]="badge.cssClass">{{ badge.label }}</span>
               </div>
               <div class="meta-item">
                 <span class="meta-label">Institución:</span>
-                <strong>Instituto Superior IDAT</strong>
+                <strong>Instituto IDAT</strong>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Sede:</span>
+                <strong>Lima Centro</strong>
               </div>
             </div>
           </div>
 
-          <!-- Información Técnica del Token JWT -->
-          <div class="card jwt-details-card" appHoverCard>
-            <div class="jwt-header">
-              <div class="jwt-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
-              </div>
-              <div>
-                <h3>Detalles de Autenticación JWT</h3>
-                <p class="text-muted">Token emitido por el backend Spring Boot / Mock API</p>
-              </div>
+          <!-- Formulario de Edición de Datos Personales -->
+          <div class="card profile-form-card" appHoverCard>
+            <div class="card-header-clean">
+              <h3>Información Personal</h3>
+              <p class="text-muted">Mantén actualizados tus datos de contacto en la plataforma</p>
             </div>
 
-            <div class="jwt-info-body">
-              <div class="jwt-stat-row">
-                <div class="jwt-stat-box">
-                  <span class="stat-title">Algoritmo</span>
-                  <strong>HS256 (HMAC SHA-256)</strong>
+            <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="profile-form">
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label class="form-label">Nombre Completo</label>
+                  <input type="text" formControlName="name" class="form-control" />
                 </div>
-                <div class="jwt-stat-box">
-                  <span class="stat-title">Tipo de Token</span>
-                  <strong>Bearer Token</strong>
-                </div>
-                <div class="jwt-stat-box">
-                  <span class="stat-title">Expiración</span>
-                  <strong>24 Horas</strong>
+                <div class="form-group flex-1">
+                  <label class="form-label">Correo Institucional</label>
+                  <input type="email" formControlName="email" class="form-control" readonly />
                 </div>
               </div>
 
-              <div class="token-code-section">
-                <label class="form-label">Token JWT Actual (Almacenado en LocalStorage):</label>
-                <div class="token-box">
-                  <code>{{ rawToken }}</code>
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label class="form-label">Teléfono / Celular</label>
+                  <input type="text" formControlName="phone" class="form-control" placeholder="+51 987 654 321" />
+                </div>
+                <div class="form-group flex-1">
+                  <label class="form-label">Rol Asignado</label>
+                  <input type="text" [value]="user.role | roleName" class="form-control" readonly />
                 </div>
               </div>
 
-              @if (decodedToken) {
-                <div class="payload-section">
-                  <label class="form-label">Claims / Payload Decodificado:</label>
-                  <pre class="payload-box"><code>{{ decodedToken | json }}</code></pre>
-                </div>
-              }
-            </div>
+              <div class="section-divider">
+                <h4>Seguridad de la Cuenta</h4>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Nueva Contraseña (Opcional)</label>
+                <input type="password" formControlName="newPassword" class="form-control" placeholder="••••••••" />
+                <span class="field-hint">Déjala en blanco si deseas conservar tu contraseña actual.</span>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid || isSaving">
+                  {{ isSaving ? 'Guardando cambios...' : 'Guardar Cambios' }}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       }
@@ -109,7 +116,7 @@ import { DecodedToken } from '../../core/models/auth.model';
     }
     .profile-grid {
       display: grid;
-      grid-template-columns: 340px 1fr;
+      grid-template-columns: 320px 1fr;
       gap: 1.5rem;
     }
     @media (max-width: 900px) {
@@ -133,8 +140,8 @@ import { DecodedToken } from '../../core/models/auth.model';
       height: 100px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid var(--primary-200);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 3px solid var(--border-color);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
     }
     .badge-online {
       position: absolute;
@@ -146,9 +153,14 @@ import { DecodedToken } from '../../core/models/auth.model';
       padding: 0.2rem 0.5rem;
       border: 2px solid #ffffff;
     }
+    .badge-role {
+      background-color: var(--primary-50);
+      color: var(--primary-700);
+      border: 1px solid var(--primary-200);
+    }
     .profile-name {
       font-size: 1.25rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
     }
     .profile-email {
       font-size: 0.875rem;
@@ -172,84 +184,110 @@ import { DecodedToken } from '../../core/models/auth.model';
     .meta-label {
       color: #64748b;
     }
-    .jwt-details-card {
-      padding: 1.75rem;
+    .profile-form-card {
+      padding: 2rem;
     }
-    .jwt-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #f1f5f9;
+    .card-header-clean {
       margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #f1f5f9;
     }
-    .jwt-icon {
-      width: 44px;
-      height: 44px;
-      background-color: var(--primary-50);
-      color: var(--primary-600);
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .card-header-clean h3 {
+      font-size: 1.125rem;
+      margin-bottom: 0.25rem;
     }
-    .jwt-info-body {
+    .profile-form {
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
     }
-    .jwt-stat-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+    .form-row {
+      display: flex;
       gap: 1rem;
     }
-    .jwt-stat-box {
-      background: #f8fafc;
-      padding: 0.875rem;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
+    .flex-1 { flex: 1; }
+    .section-divider {
+      margin-top: 0.5rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--border-color);
+    }
+    .section-divider h4 {
+      font-size: 0.9375rem;
+      color: #334155;
+      margin-bottom: 0.25rem;
+    }
+    .field-hint {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 0.25rem;
+    }
+    .form-actions {
       display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-    .stat-title {
-      font-size: 0.75rem;
-      color: #64748b;
-    }
-    .token-box {
-      background: #0f172a;
-      color: #38bdf8;
-      padding: 1rem;
-      border-radius: var(--radius-md);
-      font-size: 0.75rem;
-      word-break: break-all;
-      max-height: 90px;
-      overflow-y: auto;
-      font-family: monospace;
-    }
-    .payload-box {
-      background: #f8fafc;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 1rem;
-      font-size: 0.8125rem;
-      color: #1e293b;
-      overflow-x: auto;
-      font-family: monospace;
+      justify-content: flex-end;
+      margin-top: 0.5rem;
     }
     .mb-2 { margin-bottom: 0.5rem; }
   `]
 })
 export class ProfileComponent implements OnInit {
   public authService = inject(AuthService);
+  private userService = inject(UserService);
+  private notification = inject(NotificationService);
+  private fb = inject(FormBuilder);
 
-  rawToken: string = '';
-  decodedToken: DecodedToken | null = null;
+  profileForm: FormGroup = this.fb.group({
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    email: [{ value: '', disabled: true }],
+    phone: [''],
+    newPassword: ['']
+  });
+
+  isSaving = false;
 
   ngOnInit(): void {
-    this.rawToken = this.authService.getToken() || 'No hay token activo';
-    if (this.rawToken) {
-      this.decodedToken = this.authService.decodeToken(this.rawToken);
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      this.profileForm.patchValue({
+        name: user.name,
+        email: user.email,
+        phone: user.phone || ''
+      });
     }
+  }
+
+  saveProfile(): void {
+    if (this.profileForm.invalid) return;
+
+    const user = this.authService.getCurrentUser();
+    if (!user?.id) return;
+
+    this.isSaving = true;
+    const formVal = this.profileForm.value;
+
+    const updateData: any = {
+      name: formVal.name,
+      email: user.email,
+      phone: formVal.phone,
+      role: user.role,
+      status: user.status
+    };
+
+    if (formVal.newPassword && formVal.newPassword.trim()) {
+      updateData.password = formVal.newPassword.trim();
+    }
+
+    this.userService.updateUser(user.id, updateData).subscribe({
+      next: (res) => {
+        this.isSaving = false;
+        this.notification.success('Perfil Actualizado', 'Tus datos han sido guardados correctamente.');
+        if (res.data) {
+          const updatedUser = { ...user, name: res.data.name, phone: res.data.phone };
+          localStorage.setItem('eduportal_user_data', JSON.stringify(updatedUser));
+        }
+      },
+      error: () => {
+        this.isSaving = false;
+      }
+    });
   }
 }
