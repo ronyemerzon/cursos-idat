@@ -10,9 +10,9 @@
 - **Proyecto:** EduPortal - Sistema de Gestión Académica Centralizada de Cursos y Usuarios
 - **Modalidad:** Grupal (3 Integrantes)
 - **Integrantes:**
-  1. *[Nombre y Apellidos del Integrante 1]*
-  2. *[Nombre y Apellidos del Integrante 2]*
-  3. *[Nombre y Apellidos del Integrante 3]*
+  1. **Rony Emerzon Pascual Cárdenas**
+  2. **Alison Laulate Villa**
+  3. **Cristhian Moreno Silva**
 - **Fecha:** Agosto 2026
 
 ---

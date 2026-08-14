@@ -6,9 +6,9 @@ Aplicación Web SPA en **Angular** conectada a una API REST con **Spring Boot 3*
 ---
 
 ## 👥 Integrantes del Equipo
-1. *[Nombre del Integrante 1]* - Desarrollo Frontend (Angular & Enrutamiento)
-2. *[Nombre del Integrante 2]* - Desarrollo Backend (Spring Boot & Seguridad JWT)
-3. *[Nombre del Integrante 3]* - Integración REST, Pruebas Funcionales & Documentación
+1. **Rony Emerzon Pascual Cárdenas** - Desarrollo Frontend (Angular & Enrutamiento)
+2. **Alison Laulate Villa** - Desarrollo Backend (Spring Boot & Seguridad JWT)
+3. **Cristhian Moreno Silva** - Integración REST, Pruebas Funcionales & Base de Datos SQL Server
 
 ## 🔗 Repositorio GitHub
 - **HTTPS:** [https://github.com/ronyemerzon/cursos-idat](https://github.com/ronyemerzon/cursos-idat)
